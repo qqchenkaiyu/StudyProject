@@ -1,1 +1,12 @@
-bean=domain.Person
+scanPackage=com.study
+pointCut=public .* com.study.domain..*..*(.*)
+
+aspectClass=com.study.Spring.aspect.LogAspect
+
+aspectBefore=before
+
+aspectAfter=after
+
+aspectAfterThrow=afterThrowing
+
+aspectAfterThrowingName=java.lang.Exception
