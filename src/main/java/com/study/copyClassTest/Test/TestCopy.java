@@ -43,7 +43,7 @@ public class TestCopy {
         for (int i = 0; i < times; i++) {
             Boy boy1 = (Boy) BeanUtils.cloneBean(boy);
         }
-        System.out.println(" testCommonCopy useTime " + (System.currentTimeMillis() - begin));
+        System.out.println(" testCommonCopy useTime  " + (System.currentTimeMillis() - begin));
     }
 
     public void testSystemClone(int times, Boy boy) throws Exception {
