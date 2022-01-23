@@ -1,5 +1,6 @@
 package com.study.JUC;
 
+import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import sun.misc.Unsafe;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 import java.util.concurrent.locks.LockSupport;
 
 @Slf4j
+@Data
 public class MyAQS {
     // 0释放  >0 占用
     private volatile int state;

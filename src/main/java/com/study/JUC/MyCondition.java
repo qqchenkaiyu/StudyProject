@@ -24,7 +24,8 @@ public class MyCondition {
     }
 
     public void signalAll() {
-        myLock.aqsList.addAll(conditionList);
+
+        myLock.getMyAQS().getAqsList().addAll(conditionList);
         conditionList.clear();
 
     }

@@ -97,6 +97,9 @@ public class ApplicaionContext {
     }
 
     private Object initialBean(Object instance) {
+        // 先执行各种BeanPostProcesorBeforeInitial  比如设置applicationcontextaware
+        // 然后执行init方法
+        // 先执行各种BeanPostProcesorAfterInitial  比如AopBeanPostProcesor
         AopBeanPostProcesor beanPostProcesor = new AopBeanPostProcesor();
         beanPostProcesor.setContext(this);
         return beanPostProcesor.postAfterInitial(instance);

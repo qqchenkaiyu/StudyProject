@@ -1,8 +1,10 @@
 package com.study.JUC;
 
 
-import java.util.concurrent.locks.ReentrantLock;
+import lombok.Data;
 
+import java.util.concurrent.locks.ReentrantLock;
+@Data
 public class MyLock {
     private MyAQS myAQS = new MyAQS();
 
