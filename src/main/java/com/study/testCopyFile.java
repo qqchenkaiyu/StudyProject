@@ -13,6 +13,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class test {
     public static void main(String[] args) throws Exception {
@@ -86,8 +89,11 @@ public class test {
         }
 
         start = System.currentTimeMillis();
-        FileUtil.copy(s, t, true);
+        Files.copy(s.toPath(), t.toPath(), new CopyOption[] {
+            StandardCopyOption.REPLACE_EXISTING
+        });
         end = System.currentTimeMillis();
+
         System.out.println("调用 Files.copy 进行拷贝");
         System.out.println(end - start);
         t.delete();
