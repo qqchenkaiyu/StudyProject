@@ -89,6 +89,7 @@ public class test {
         }
 
         start = System.currentTimeMillis();
+        //  FileUtil.copy(s,t,true); 调用的就是下面这句
         Files.copy(s.toPath(), t.toPath(), new CopyOption[] {
             StandardCopyOption.REPLACE_EXISTING
         });
