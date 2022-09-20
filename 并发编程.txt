@@ -1,0 +1,40 @@
+并发：同一时刻只运行一个任务，但是由于时间片分配，时间段内多个任务都执行了
+并行：同一时刻运行多个任务（需要多个物理核）
+线程状态：NEW,RUNABLE,RUNNING,WAIT,TIME_WAITING,BLOCKED
+守护线程：当最后一个用户线程推出则JVM推出，不管守护线程（比如垃圾回收）
+threadlocal: 每个线程里都有个threadlocalmap（threadlocal（weak）->val）,用于数据源选择
+threadlocal内存泄露：gc后虽然threadlocal变量软引用被回收，但value还在
+为什么不设计成强引用：假如threadlocal变量生命周期到期被回收，但是由于线程未停止，threadlocalmap仍持有threadlocal引用，则内存泄露
+冲突解决：开放定址发：hash计算坑位，发现被占就顺序往后找坑位。
+扩容：扩容成两倍，循环移动元素，开放定址解决冲突
+父线程可以通过InheritableThreadLocal把数据传给子线程
+hapens-before六大规则：
+程序顺序规则：一个线程中每个操作hapens-before于该线程后续操作
+监视器锁规则：解锁发生在加锁之后
+volatile规则：写发生在后续°前
+thread.start规则：A startB,startB发生在B代码前
+thread.join规则： A 执行B.join,B代码发生在join后续代码前
+传递性规则：A hapens-before B,B hapens-before C,则A hapens-before C
+as-if-serial：不管怎么重排序，单线程执行的结果不能发生改变
+synchronized实现：修饰代码块，monitorenter,monitorexit，本质是基于对象头里的锁状态(owner，waitset(拿到锁进入wait),_EntryList(block状态))
+锁状态升级：无锁-偏向锁(直接设置偏向锁中的标识 设置不了进行cas锁)-轻量级锁(cas获取锁 一定次数获取不了升级成重量级锁阻塞)-重量级锁
+说说synchronized和ReentrantLock的区别：一个是java语言实现，一个虚拟机底层实现，之前synchronized性能差，优化过后性能差不多，
+ReentrantLock还实现了可选择性通知，公平锁机制（不会像非公平锁那样直接尝试获取锁，而是直接进入队列）
+ReentrantLock原理：默认非公平锁，lock()方法判断锁状态，如果之前没锁就设置锁拥有者为线程自己，如果之前当前线程获得过锁则增加重入次数，
+如果被其他线程持有，则尝试cas获取锁，失败则使用tryAcquire进入队列等待，这时如果state=0就会直接抢占。
+CAS是一条CPU的指令，可以保证原子性
+ABA问题：把变量从A CAS 修改到C,但是变量已经从A-B-A这样变化过了，即使修改成功可能也会有问题。解决：加版本号
+性能问题：设置最大自旋次数
+原子基本类型大多是进行CAS
+死锁四条件：
+互斥条件
+请求并持有
+不可剥夺
+环路等待
+AQS原理：内部有个state用volatile保证可见性，线程cas去抢占这个值，抢不到就进入CLH队列睡眠。节点node SHARED标记节点是进行共享方式抢占被挂起,
+EXCLUSIVE 代表是用独占方式获取资源被挂起
+CountDownLatch可用于协调子线程完成任务后主线程再继续运行
+Semaphore：流量控制
+线程池：重复利用，减少创建线程开销
+过程：来任务后core thread没满就先创建个core thread,如果满了就把任务放进队列，队列满的情况下创建max thread,这部分线程需要设置存活时间。
+拒绝策略：抛异常，当前线程执行，拒绝执行，丢弃最老的任务
