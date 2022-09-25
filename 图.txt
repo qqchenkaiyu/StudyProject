@@ -1,0 +1,21 @@
+1.图就是多叉树
+遍历图
+traverse(node){
+for(node.neighbor)
+if(!visit(node.neighbor))
+    traverse(node.neighbor);
+}
+
+环检测：
+遍历图，看是否走回visit
+
+并查集算法：
+数据结构是多个 多叉树，
+connect(p,q) = 把p跟q的根节点连起来（一个root挂到另一个root下面）
+isConnect(p,q) =  root(p) == root(q)?
+count = 有多少个多叉树（多少个连通分量）
+
+
+二分图：解决颜色问题
+遍历图，每次用不同颜色着色，看能否遍历完
+
