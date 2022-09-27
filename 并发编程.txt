@@ -3,8 +3,14 @@
 线程状态：NEW,RUNABLE,RUNNING,WAIT,TIME_WAITING,BLOCKED
 守护线程：当最后一个用户线程推出则JVM推出，不管守护线程（比如垃圾回收）
 threadlocal: 每个线程里都有个threadlocalmap（threadlocal（weak）->val）,用于数据源选择
-threadlocal内存泄露：gc后虽然threadlocal变量软引用被回收，但value还在
-为什么不设计成强引用：假如threadlocal变量生命周期到期被回收，但是由于线程未停止，threadlocalmap仍持有threadlocal引用，则内存泄露
+threadlocal内存泄露：
+看这样的代码(下面的代码不会溢出  因为一直有调用set)
+for{
+TestThreadLocal<TestObject> threadLocal = new TestThreadLocal<>();
+threadLocal.set(new TestObject());
+}
+gc后虽然threadlocal变量软引用被回收，但value还在,entry也还在,此时此线程如果执行get,set,remove都会把空的entry清理。但是一直不执行就容易泄露
+为什么不设计成强引用：看上面的代码，但是由于线程未停止，threadlocalmap仍持有threadlocal强引用，则内存泄露
 冲突解决：开放定址发：hash计算坑位，发现被占就顺序往后找坑位。
 扩容：扩容成两倍，循环移动元素，开放定址解决冲突
 父线程可以通过InheritableThreadLocal把数据传给子线程
