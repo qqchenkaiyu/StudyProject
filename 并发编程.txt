@@ -5,6 +5,8 @@
 threadlocal: 每个线程里都有个threadlocalmap（threadlocal（weak）->val）,用于数据源选择
 threadlocal内存泄露：
 看这样的代码(下面的代码不会溢出  因为一直有调用set)
+由于entry extend weakReference,new entry(k,v)等价于entry = new weakReference(k),entry.setValue(v);
+回收后,entry.getKey()等价于weakReference.get() = null
 for{
 TestThreadLocal<TestObject> threadLocal = new TestThreadLocal<>();
 threadLocal.set(new TestObject());
