@@ -10,7 +10,7 @@ DMA拷贝2次 从内核缓冲到内核缓冲cpu一次 调mmap方法切换内核�
 
 
 1.nio
-传统io:我等你完成 while(true) socket = socket.read(); //进内核态空间取数据 没有就wait()
-非阻塞io:做点别的，过一会就来看看你完成了没 while(true) socket = socket.read(); //进内核态空间取数据 自旋
-基于非阻塞io的多路复用：做点别的，过一会就来看看你们谁完成了 while(true) channels = selectChannel(); //进内核态空间取数据 自旋
-nio:基于epoll 你做完了通知我，我不用等你  while(true) socket = socket.read(); //从用户态空间某个位置取数据 没有就wait()
+传统io:我等你完成 while(true) socket = socket.read(); //进内核态空间取单个数据 没有就wait()
+非阻塞io:做点别的，过一会就来看看你完成了没 while(true) socket = socket.read(); //进内核态空间取单个数据 自旋
+基于非阻塞io的多路复用：做点别的，过一会就来看看你们谁完成了 while(true) channels = selectChannel(); //进内核态空间取多个数据 自旋
+nio:基于epoll 你做完了通知我，我不用等你  while(true) socket = socket.read(); //从内核态就绪队列取数据 没有就wait()
