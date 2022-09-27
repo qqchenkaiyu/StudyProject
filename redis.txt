@@ -86,3 +86,6 @@ quicklist就是linkedlist但是节点值不是void*而是ziplistnode
 
 redis找到某个前缀的key
 使用scan不停翻页（keys命令会阻塞），需要去重
+
+redission实现的分布式锁效率更高，watchdog机制在使用默认30秒超时的前题下会用一个定时任务每10秒检测一次延长锁时间，
+每次加锁解锁都通过lua脚本，通过订阅锁释放消息减少重复获取锁的消耗。
