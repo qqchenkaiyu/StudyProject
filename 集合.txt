@@ -9,4 +9,4 @@ set方法：根据key.hash与数组长度取模确定下标，与链表逐个根
 扰动函数：key.hashcode得到int,高16位与低16位进行异或
 ConcurrentHashmap实现：
 1.7分段锁，分16个segment（继承lock,内部是entrylist）,最大并发度是16
-1.8对每一个数组节点用cas+synchronized加锁，结果是数组+链表+红黑树，cas用来初始化数组和头结点，链表跟红黑树操作（put）是synchronized锁头结点
+1.8对每一个数组节点用cas+synchronized加锁，结构是数组+链表+红黑树，cas用来初始化数组和头结点，链表跟红黑树操作（put）是synchronized锁头结点

@@ -2,13 +2,13 @@ redis是什么 可以用来做什么
 redis是一款基于内存的nosql数据库
 有多种数据结构
 string 底层sds基于C语言字符串做了优化，多存了length属性，支持扩容。场景用于存取json对象，计数器，分布式锁
-hash 可用于购物车
-list  实现队列，栈
-set 实现去重，交集（共同好友/粉丝），随机取出一个元素(抽奖)
-sortedset 元素具有分值 用于排行榜，延时队列
+hash 可用于购物车 底层dict
+list  实现队列，栈 底层 linkedList
+set 实现去重，交集（共同好友/粉丝），随机取出一个元素(抽奖)   底层 intSet dict
+sortedset 元素具有分值 用于排行榜，延时队列 底层 skipList
 
 bitmap 布隆过滤器
-hyperloglog
+hyperloglog 基数计数
 geo 存地理位置 计算距离，实现附近的人功能
 支持以下持久化方式
 aof 记录每次更新命令，文件过大时需要进行重写（从redis数据库读取所有键值进行写入），有aof优先用aof恢复，根据不同策略刷盘（每次都刷或 每秒一次 或由系统决定）
