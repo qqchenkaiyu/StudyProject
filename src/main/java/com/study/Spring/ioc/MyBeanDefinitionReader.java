@@ -34,9 +34,6 @@ public class MyBeanDefinitionReader {
             if (clazz.isInterface()||!clazz.isAnnotationPresent(GPComponent.class)) {
                 continue;
             }
-            if (!clazz.isAnnotationPresent(GPComponent.class)) {
-                continue;
-            }
             result.add(doCreateBeanDefinition(clazz.getSimpleName(), clazz.getName()));
             Class<?>[] interfaces = clazz.getInterfaces();
             for (Class<?> i : interfaces) {
