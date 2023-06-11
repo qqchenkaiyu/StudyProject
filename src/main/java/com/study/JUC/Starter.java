@@ -1,4 +1,4 @@
-package com.study;
+package com.study.JUC;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +8,6 @@ import java.util.concurrent.*;
 @Slf4j
 public class Starter {
     public static void main(String[] args) {
-//        testSpring();
 //     testLock();
 //        testCondition();
 
@@ -59,9 +58,4 @@ public class Starter {
 //        executorService.shutdown();
 //    }
 
-    private static void testSpring() {
-        //        ApplicaionContext context=new ApplicaionContext("beans.setting");
-//        PersonInterface person=context.getBean(Person.class);
-//        person.hello();
-    }
 }

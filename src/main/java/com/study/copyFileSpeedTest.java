@@ -2,7 +2,7 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2022-2022. All rights reserved.
  */
 
-package com.study.copyFileTest;
+package com.study;
 
 import cn.hutool.core.io.FileUtil;
 
@@ -17,7 +17,7 @@ import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-public class test {
+public class copyFileSpeedTest {
     public static void main(String[] args) throws Exception {
 
         File s = new File("D:\\struts2帮助文档.rar");
