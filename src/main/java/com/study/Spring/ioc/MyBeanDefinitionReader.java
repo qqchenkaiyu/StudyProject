@@ -6,9 +6,7 @@ import cn.hutool.setting.Setting;
 import com.study.Spring.GPComponent;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 根据配置的package进行bean信息的扫描
@@ -33,7 +31,7 @@ public class MyBeanDefinitionReader {
     public List<MyBeanDefinition> loadBeanDefinitions() {
         List<MyBeanDefinition> result = new ArrayList<>();
         for (Class clazz : registyBeanClasses) {
-            if (clazz.isInterface()) {
+            if (clazz.isInterface()||!clazz.isAnnotationPresent(GPComponent.class)) {
                 continue;
             }
             if (!clazz.isAnnotationPresent(GPComponent.class)) {

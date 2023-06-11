@@ -1,5 +1,5 @@
 scanPackage=com.study
-pointCut=public .* com.study.domain..*..*(.*)
+pointCut=public .* com.study.com.study.Spring.domain..*..*(.*)
 
 aspectClass=com.study.Spring.aspect.LogAspect
 

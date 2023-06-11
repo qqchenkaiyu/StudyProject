@@ -1,21 +1,22 @@
 package com.study.Spring.ioc;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.map.MapUtil;
 import com.study.Spring.AopBeanPostProcesor;
 import com.study.Spring.aop.gpaop.GPAopProxy;
 import com.study.Spring.aop.gpaop.GPJdkDynamicAopProxy;
 import com.study.Spring.aop.config.GPAopConfig;
 import com.study.Spring.aop.gpaop.support.GPAdvisedSupport;
-import com.study.Spring.aop.myaop.MyAdvisedSupport;
-import com.study.Spring.aop.myaop.MyJdkDynamicAopProxy;
-import com.study.Spring.aop.myaop2.MyJdkDynamicAopProxy2;
 import lombok.Data;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Data
 public class ApplicaionContext {
@@ -52,46 +53,32 @@ public class ApplicaionContext {
         reader = new MyBeanDefinitionReader(this.location);
         // 注册成beanDefinition
         List<MyBeanDefinition> beanDefinitions = reader.loadBeanDefinitions();
-        for (MyBeanDefinition beanDefinition : beanDefinitions) {
-            beanDefinitionHashMap.put(beanDefinition.getFactoryBeanName(), beanDefinition);
-        }
-        //4、把不是延时加载的类，有提前初始化
+        // beanDefinitions根据FullClassName转换成map
+        CollectionUtil.toMap(beanDefinitions,beanDefinitionHashMap,MyBeanDefinition::getFactoryBeanName);
+        // 把不是延时加载的类，有提前初始化
         initBean();
     }
 
     private void initBean() {
-        for (Map.Entry<String, MyBeanDefinition> stringMyBeanDefinitionEntry : beanDefinitionHashMap.entrySet()) {
-            getBean(stringMyBeanDefinitionEntry.getValue());
-        }
+        beanDefinitionHashMap.values().forEach(v->getBean(v));
     }
-
     private Object getBean(MyBeanDefinition beanDefinition) {
-
         //这个逻辑还不严谨，自己可以去参考Spring源码
         //工厂模式 + 策略模式
         // GPBeanPostProcessor postProcessor = new GPBeanPostProcessor();
-
         //   postProcessor.postProcessBeforeInitialization(instance,beanName);
         if (singletonObjects.containsKey(beanDefinition.getFactoryBeanName())) {
             return singletonObjects.get(beanDefinition.getFactoryBeanName());
         }
         Object instance = instantiateBean(beanDefinition);
-
         //3、把这个对象封装到BeanWrapper中
-
-
         //4、把BeanWrapper存到IOC容器里面
-
         //2、拿到BeanWraoper之后，把BeanWrapper保存到IOC容器中去
-
         //  postProcessor.postProcessAfterInitialization(instance,beanName);
-
 //        //3、注入
         populateBean(instance);
-
         // 如果匹配判定需要切面 则创建代理对象
         instance = initialBean(instance);
-
         singletonObjects.put(beanDefinition.getFactoryBeanName(), instance);
         return instance;
     }
@@ -144,7 +131,6 @@ public class ApplicaionContext {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-
         }
 
     }
@@ -195,16 +181,5 @@ public class ApplicaionContext {
 //        return new GPCglibAopProxy(config);
 
         return new GPJdkDynamicAopProxy(config);
-    }
-
-    private GPAdvisedSupport instantionAopConfig() {
-        GPAopConfig config = new GPAopConfig();
-        config.setPointCut(this.reader.getConfig().get("pointCut"));
-        config.setAspectClass(this.reader.getConfig().get("aspectClass"));
-        config.setAspectBefore(this.reader.getConfig().get("aspectBefore"));
-        config.setAspectAfter(this.reader.getConfig().get("aspectAfter"));
-        config.setAspectAfterThrow(this.reader.getConfig().get("aspectAfterThrow"));
-        config.setAspectAfterThrowingName(this.reader.getConfig().get("aspectAfterThrowingName"));
-        return new GPAdvisedSupport(config);
     }
 }

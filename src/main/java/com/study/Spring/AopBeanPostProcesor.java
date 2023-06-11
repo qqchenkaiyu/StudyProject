@@ -16,6 +16,7 @@ import java.lang.reflect.Proxy;
 public class AopBeanPostProcesor {
 
 
+
     ApplicaionContext context;
 
     public Object postAfterInitial(Object instance) {
@@ -29,15 +30,7 @@ public class AopBeanPostProcesor {
     }
 
     private MyAdvisedSupport getSupport() {
-        GPAopConfig config = new GPAopConfig();
-        Setting config1 = context.getReader().getConfig();
-        config.setPointCut(config1.get("pointCut"));
-        config.setAspectClass(config1.get("aspectClass"));
-        config.setAspectBefore(config1.get("aspectBefore"));
-        config.setAspectAfter(config1.get("aspectAfter"));
-        config.setAspectAfterThrow(config1.get("aspectAfterThrow"));
-        config.setAspectAfterThrowingName(config1.get("aspectAfterThrowingName"));
-        return new MyAdvisedSupport(config);
+        return new MyAdvisedSupport(context.getReader().getConfig().toBean(GPAopConfig.class));
     }
 
 }

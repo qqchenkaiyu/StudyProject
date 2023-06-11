@@ -18,6 +18,8 @@ public class GroupTest {
         int age;
         String name;
         String school;
+
+
     }
     public static void main(String[] args){
         List<People> peopleList = Arrays.asList(new People(10, "lili", "zhejiang"),

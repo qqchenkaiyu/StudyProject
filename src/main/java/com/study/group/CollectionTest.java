@@ -1,9 +1,10 @@
 package com.study.group;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.PageUtil;
+
+import java.util.*;
 import java.util.function.Function;
 
 public class CollectionTest {
@@ -17,5 +18,9 @@ public class CollectionTest {
                     .add(t1);
         });
         return res;
+    }
+
+
+    public <T> void page(List<T> list, int pageNo, int pageSize) {
     }
 }
